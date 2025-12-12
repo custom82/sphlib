@@ -1,4 +1,4 @@
-/* sph_luffa.h - Versione completa per compatibilità con Ravencoin luffa.c */
+/* sph_luffa.h - Versione modificata per compatibilità con Ravencoin */
 #ifndef SPH_LUFFA_H__
 #define SPH_LUFFA_H__
 
@@ -8,19 +8,23 @@ extern "C" {
 
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 
+/* Dimensioni di output in bit. */
 #define SPH_SIZE_luffa224   224
 #define SPH_SIZE_luffa256   256
 #define SPH_SIZE_luffa384   384
 #define SPH_SIZE_luffa512   512
 
-/* Struttura modificata per compatibilità con luffa.c di Ravencoin */
+/* 
+ * Contesto per Luffa.
+ * Modificato: V è un array lineare di 32 elementi (invece di V[3][8], etc.)
+ * per compatibilità con l'implementazione in luffa.c di Ravencoin.
+ */
 typedef struct {
 #ifndef DOXYGEN_IGNORE
-    unsigned char buf[32];
+    unsigned char buf[32];    /* primo campo, per allineamento */
     size_t ptr;
-    uint32_t V[32];           /* MODIFICATO: Array lineare di 32 elementi */
+    uint32_t V[32];           /* 32 elementi lineari */
 #endif
 } sph_luffa224_context;
 
@@ -28,7 +32,7 @@ typedef sph_luffa224_context sph_luffa256_context;
 typedef sph_luffa224_context sph_luffa384_context;
 typedef sph_luffa224_context sph_luffa512_context;
 
-/* Funzioni di supporto per little-endian */
+/* Funzioni di supporto per la lettura/scrittura little-endian */
 static inline uint32_t sph_dec32le_aligned(const void *src) {
     const unsigned char *buf = (const unsigned char *)src;
     return (uint32_t)buf[0] | ((uint32_t)buf[1] << 8) |
@@ -51,17 +55,17 @@ static inline void enc32le(void *dst, uint32_t val) {
     sph_enc32le(dst, val);
 }
 
-/* Macro per costanti */
+/* Macro per costanti a 32 bit */
 #define SPH_C32(x)    ((uint32_t)(x))
 
-/* Macro per dichiarare tutte le variabili Vxx */
+/* Macro per dichiarare le variabili di stato locali */
 #define DECLARE_VARS \
     uint32_t V00, V01, V02, V03, V04, V05, V06, V07; \
     uint32_t V10, V11, V12, V13, V14, V15, V16, V17; \
     uint32_t V20, V21, V22, V23, V24, V25, V26, V27; \
     uint32_t V30, V31, V32, V33, V34, V35, V36, V37;
 
-/* Macro per leggere lo stato */
+/* Macro per leggere lo stato dal contesto nelle variabili locali */
 #define READ_STATE(state) \
     V00 = (state)->V[0];  V01 = (state)->V[1];  V02 = (state)->V[2];  V03 = (state)->V[3]; \
     V04 = (state)->V[4];  V05 = (state)->V[5];  V06 = (state)->V[6];  V07 = (state)->V[7]; \
@@ -72,7 +76,7 @@ static inline void enc32le(void *dst, uint32_t val) {
     V30 = (state)->V[24]; V31 = (state)->V[25]; V32 = (state)->V[26]; V33 = (state)->V[27]; \
     V34 = (state)->V[28]; V35 = (state)->V[29]; V36 = (state)->V[30]; V37 = (state)->V[31]
 
-/* Macro per scrivere lo stato */
+/* Macro per scrivere lo stato dalle variabili locali al contesto */
 #define WRITE_STATE(state) \
     (state)->V[0] = V00;  (state)->V[1] = V01;  (state)->V[2] = V02;  (state)->V[3] = V03; \
     (state)->V[4] = V04;  (state)->V[5] = V05;  (state)->V[6] = V06;  (state)->V[7] = V07; \
@@ -83,7 +87,7 @@ static inline void enc32le(void *dst, uint32_t val) {
     (state)->V[24] = V30; (state)->V[25] = V31; (state)->V[26] = V32; (state)->V[27] = V33; \
     (state)->V[28] = V34; (state)->V[29] = V35; (state)->V[30] = V36; (state)->V[31] = V37
 
-/* Prototipi delle funzioni */
+/* Prototipi delle funzioni Luffa */
 void sph_luffa224_init(void *cc);
 void sph_luffa224(void *cc, const void *data, size_t len);
 void sph_luffa224_close(void *cc, void *dst);
