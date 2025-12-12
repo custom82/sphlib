@@ -6,27 +6,47 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+    #endif
 
-/* SPH GOST context structure */
-typedef struct {
-    unsigned char buffer[32];  /* Input buffer */
-    unsigned long long count;  /* Total message length in bits */
-    unsigned int state[8];     /* Hash state */
-    unsigned int sigma[8];     /* Accumulator for message length */
-    size_t buf_ptr;            /* Buffer pointer */
-} sph_gost_context;
+    /* SPH GOST context structure */
+    typedef struct {
+        unsigned char buffer[32];  /* Input buffer */
+        unsigned long long count;  /* Total message length in bits */
+        unsigned int state[8];     /* Hash state */
+        unsigned int sigma[8];     /* Accumulator for message length */
+        size_t buf_ptr;            /* Buffer pointer */
+    } sph_gost_context;
 
-/* GOST hash size in bits */
-#define SPH_SIZE_gost 256
+    /* GOST hash size in bits */
+    #define SPH_SIZE_gost 256
 
-/* Function prototypes */
-void sph_gost_init(void *cc);
-void sph_gost(void *cc, const void *data, size_t len);
-void sph_gost_close(void *cc, void *dst);
-void sph_gost_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst);
+    /* Function prototypes */
+    void sph_gost_init(void *cc);
+    void sph_gost(void *cc, const void *data, size_t len);
+    void sph_gost_close(void *cc, void *dst);
+    void sph_gost_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst);
 
-#ifdef __cplusplus
+    /* ================ INIZIO MODIFICHE PER COMPATIBILITÀ RAVENCOIN ================ */
+
+    /*
+     * Definizione di alias per la compatibilità con il codice esistente.
+     * Il tipo `sph_gost512_context` era utilizzato nelle versioni precedenti
+     * ed è funzionalmente identico a `sph_gost_context` in questa implementazione.
+     */
+    typedef sph_gost_context sph_gost512_context;
+
+    /*
+     * Macro wrapper che mappano le nuove funzioni GOST alle vecchie denominazioni
+     * utilizzate nel codice Ravencoin. Questo permette di compilare senza modificare
+     * il codice sorgente esistente.
+     */
+    #define sph_gost512_init   sph_gost_init
+    #define sph_gost512        sph_gost
+    #define sph_gost512_close  sph_gost_close
+
+    /* ================ FINE MODIFICHE PER COMPATIBILITÀ RAVENCOIN ================ */
+
+    #ifdef __cplusplus
 }
 #endif
 
