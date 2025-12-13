@@ -37,6 +37,10 @@
 #ifndef SPH_BLAKE_H__
 #define SPH_BLAKE_H__
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 #include <stddef.h>
 #include "sph_types.h"
 
@@ -314,6 +318,10 @@ void sph_blake512_close(void *cc, void *dst);
 void sph_blake512_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif
