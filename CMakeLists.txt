@@ -12,6 +12,7 @@ file(GLOB LIBRARY_SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/c/*.c")
 list(FILTER LIBRARY_SOURCES EXCLUDE REGEX ".*/test_.*\\.c$")
 list(FILTER LIBRARY_SOURCES EXCLUDE REGEX ".*/(hsum|speed|utest)\\.c$")
 list(FILTER LIBRARY_SOURCES EXCLUDE REGEX ".*/(haval_helper|md_helper)\\.c$")
+list(FILTER LIBRARY_SOURCES EXCLUDE REGEX ".*/sph_.*\\.c$")
 
 # Aggiungi gli header dalla directory 'c/' (per IDE)
 file(GLOB LIBRARY_HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/c/*.h")
