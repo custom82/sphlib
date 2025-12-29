@@ -36,13 +36,12 @@ extern "C" {
     typedef sph_gost_context sph_gost512_context;
 
     /*
-     * Macro wrapper che mappano le nuove funzioni GOST alle vecchie denominazioni
-     * utilizzate nel codice Ravencoin. Questo permette di compilare senza modificare
-     * il codice sorgente esistente.
+     * Dichiarazioni delle funzioni compatibili per GOST-512.
+     * Queste funzioni sono wrapper per le funzioni esistenti.
      */
-    #define sph_gost512_init   sph_gost_init
-    #define sph_gost512        sph_gost
-    #define sph_gost512_close  sph_gost_close
+    void sph_gost512_init(void *cc);
+    void sph_gost512(void *cc, const void *data, size_t len);
+    void sph_gost512_close(void *cc, void *dst);
 
     /* ================ FINE MODIFICHE PER COMPATIBILITÀ RAVENCOIN ================ */
 

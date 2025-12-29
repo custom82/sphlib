@@ -181,23 +181,6 @@ void sph_gost_close(void *cc, void *dst) {
     }
 }
 
-/* Add bits and close */
-void sph_gost_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst) {
-    unsigned char pad[32];
-    unsigned mask;
-
-    if (n > 0) {
-        mask = (~0U) << (8 - n);
-        pad[0] = (unsigned char)((ub & mask) | (1 << (7 - n)));
-    } else {
-        pad[0] = 0x80;
-    }
-
-    memset(pad + 1, 0, 31);
-    sph_gost(cc, pad, 32);
-    sph_gost_close(cc, dst);
-}
-
 /* ================ FUNZIONI DI COMPATIBILITÀ PER RAVENCOIN ================ */
 
 /*

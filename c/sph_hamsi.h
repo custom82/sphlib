@@ -6,7 +6,7 @@
  * ==========================(LICENSE BEGIN)============================
  *
  * Copyright (c) 2007-2010  Projet RNRT SAPHIR
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -14,10 +14,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,6 +37,10 @@
 
 #include <stddef.h>
 #include "sph_types.h"
+
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 /**
  * Output size (in bits) for Hamsi-224.
@@ -307,5 +311,11 @@ void sph_hamsi512_close(void *cc, void *dst);
  */
 void sph_hamsi512_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
+
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
